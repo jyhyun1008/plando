@@ -18,11 +18,13 @@ export default function Home() {
   }
 
   return (
-    <div>
-      URL : <input id="input" onInput={changeUrl} />
-      <div id="button"><a href={url}>See Calendar</a></div>
+    <div style={{width: '100%', maxWidth: 400, margin: '100px auto', textAlign: 'center', lineHeight: 2, fontSize: 16}}>
+      <h2>PlanDo</h2>
+      <div>82.peacht.art</div>
+      <div style={{marginBottom: '5rem'}}>about</div>
+      <div>URL for Calendar JSON:</div>
+      <input id="input" onInput={changeUrl} style={{width: '100%', marginBottom:10, fontSize: 16}}/>
+      <div id="button"><a href={url} style={{padding: 10, borderRadius: 15, background: '#000', color: '#fff'}}>See Calendar</a></div>
     </div>
     )
 }
-
-  

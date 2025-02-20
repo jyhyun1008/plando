@@ -1,16 +1,10 @@
-//'use client'
 import CalendarFetch from "@/components/CalendarFetch";
-//import { useState, useEffect } from "react";
 
 export default async function Cals({url}) {
-  //const [cals, setCals] = useState([]); // 🚀 초깃값을 배열로 설정
-const cals=[]
 
   const fetchUrl = await fetch(decodeURIComponent(url))
   const text = await fetchUrl.text()
   const json = JSON.parse(text)
-
-  console.log(json)
 
   const todayWeek = new Date().getDay()
   const weekArray = []
@@ -20,32 +14,6 @@ const cals=[]
     weekArray.push(new Date(new Date() - date).getDate())
   }
 
-  // useEffect(() => {
-  //   const storedCals = localStorage.getItem("calendar");
-  //   console.log("🔍 localStorage에서 가져온 값:", storedCals);
-
-  //   try {
-  //     if (storedCals) {
-  //       setCals(JSON.parse(storedCals)); // ✅ JSON 파싱 후 상태 저장
-  //     } else {
-  //       setCals([]); // ✅ 값이 없으면 빈 배열로 초기화
-  //     }
-  //   } catch (error) {
-  //     console.error("❌ JSON 파싱 오류:", error);
-  //     setCals([]); // 오류 발생 시 빈 배열로 초기화
-  //   }
-
-  //   document.querySelector('#button')?.addEventListener('click', ()=>{
-  //     var url = document.querySelector('#url')?.value
-  //     localStorage.setItem('calendar', url)
-  //     setCals(JSON.parse(url))
-  //     console.log(url)
-  //   })
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("✅ 업데이트된 cals 값:", cals); // 🚀 상태가 업데이트될 때마다 확인
-  // }, [cals]);
 
   return (
     <>
