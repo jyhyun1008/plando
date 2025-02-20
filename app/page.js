@@ -1,10 +1,9 @@
-"use client"
+'use client'
 import CalendarFetch from "@/components/CalendarFetch";
 import { useState, useEffect } from "react"
 
 export default function Home() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [cals, setCals] = useState(['아무거나'])
+  const [cals, setCals] = useState([])
 
   const todayWeek = new Date().getDay()
   const weekArray = []
