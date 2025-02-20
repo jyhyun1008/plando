@@ -1,6 +1,5 @@
 'use client'
 import CalendarFetch from "@/components/CalendarFetch";
-import { CalendarSetting } from "@/components/CalendarSetting";
 import { useState, useEffect } from 'react';
 
 export default function Home() {
