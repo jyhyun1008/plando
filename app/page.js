@@ -1,6 +1,6 @@
 'use client'
 import CalendarFetch from "@/components/CalendarFetch";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react"
 
 export default function Home() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
