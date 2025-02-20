@@ -27,6 +27,13 @@ export default function Cals() {
       console.error("❌ JSON 파싱 오류:", error);
       setCals([]); // 오류 발생 시 빈 배열로 초기화
     }
+
+    document.querySelector('#button')?.addEventListener('click', ()=>{
+      var url = document.querySelector('#url')?.value
+      localStorage.setItem('calendar', url)
+      setCals(JSON.parse(url))
+      console.log(url)
+    })
   }, []);
 
   useEffect(() => {
