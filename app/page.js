@@ -3,7 +3,7 @@ import CalendarFetch from "@/components/CalendarFetch";
 import { useState, useEffect } from "react"
 
 export default function Home() {
-  const [cals, setCals] = useState([])
+  const [cals, setCals] = useState('[]')
 
   const todayWeek = new Date().getDay()
   const weekArray = []
@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     document.addEventListener("DOMContentLoaded", ()=> {
       if (localStorage.getItem('calendar')) {
-        setCals(JSON.parse(localStorage.getItem('calendar')))
+        setCals(localStorage.getItem('calendar'))
       }
 
       console.log(cals)
@@ -25,7 +25,7 @@ export default function Home() {
     document.querySelector('#button').addEventListener('click', ()=>{
       var url = document.querySelector('#url').value
       localStorage.setItem('calendar', url)
-      setCals(JSON.parse(url))
+      setCals(url)
       console.log(cals)
     })
     
@@ -55,7 +55,7 @@ export default function Home() {
           </div>
         ))}
   
-        {cals.map((calendar, index)=> (
+        {JSON.parse(cals).map((calendar, index)=> (
           <CalendarFetch key={`calendar${index}`} bg={calendar.bg} fg={calendar.fg} src={calendar.src} isPlan={calendar.isPlan} />
         ))}
         </div>
