@@ -1,14 +1,10 @@
-'use client'
 import { icsToJson } from "ics-to-json";
 import iCalDateParser from "ical-date-parser";
-import { useState } from "react";
 
-export default function CalendarFetch({src, bg, fg, isPlan}) {
-
-    const [cal, setCal] = useState([])
+export default async function CalendarFetch({src, bg, fg, isPlan}) {
 
     const convert = async (fileLocation) => {
-      const icsRes = await fetch(fileLocation);
+      const icsRes = await fetch(fileLocation, {mode: 'no-cors'});
       const icsData = await icsRes.text();
       // Convert
       const data = icsToJson(icsData);
@@ -29,10 +25,10 @@ export default function CalendarFetch({src, bg, fg, isPlan}) {
         }
       }
 
-      setCal(data.filter((el) => el.startDate >= 0))
+      return data.filter((el) => el.startDate >= 0)
     };
 
-    convert(src)
+    let cal = await convert(src)
 
     if (isPlan) {
         return (
@@ -46,7 +42,6 @@ export default function CalendarFetch({src, bg, fg, isPlan}) {
             </div>
           );
     }
-
 
     return (
         <div>

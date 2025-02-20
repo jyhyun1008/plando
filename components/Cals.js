@@ -1,9 +1,16 @@
-'use client'
+//'use client'
 import CalendarFetch from "@/components/CalendarFetch";
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 
-export default function Cals() {
-  const [cals, setCals] = useState([]); // 🚀 초깃값을 배열로 설정
+export default async function Cals({url}) {
+  //const [cals, setCals] = useState([]); // 🚀 초깃값을 배열로 설정
+const cals=[]
+
+  const fetchUrl = await fetch(decodeURIComponent(url))
+  const text = await fetchUrl.text()
+  const json = JSON.parse(text)
+
+  console.log(json)
 
   const todayWeek = new Date().getDay()
   const weekArray = []
@@ -13,37 +20,35 @@ export default function Cals() {
     weekArray.push(new Date(new Date() - date).getDate())
   }
 
-  useEffect(() => {
-    const storedCals = localStorage.getItem("calendar");
-    console.log("🔍 localStorage에서 가져온 값:", storedCals);
+  // useEffect(() => {
+  //   const storedCals = localStorage.getItem("calendar");
+  //   console.log("🔍 localStorage에서 가져온 값:", storedCals);
 
-    try {
-      if (storedCals) {
-        setCals(JSON.parse(storedCals)); // ✅ JSON 파싱 후 상태 저장
-      } else {
-        setCals([]); // ✅ 값이 없으면 빈 배열로 초기화
-      }
-    } catch (error) {
-      console.error("❌ JSON 파싱 오류:", error);
-      setCals([]); // 오류 발생 시 빈 배열로 초기화
-    }
+  //   try {
+  //     if (storedCals) {
+  //       setCals(JSON.parse(storedCals)); // ✅ JSON 파싱 후 상태 저장
+  //     } else {
+  //       setCals([]); // ✅ 값이 없으면 빈 배열로 초기화
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ JSON 파싱 오류:", error);
+  //     setCals([]); // 오류 발생 시 빈 배열로 초기화
+  //   }
 
-    document.querySelector('#button')?.addEventListener('click', ()=>{
-      var url = document.querySelector('#url')?.value
-      localStorage.setItem('calendar', url)
-      setCals(JSON.parse(url))
-      console.log(url)
-    })
-  }, []);
+  //   document.querySelector('#button')?.addEventListener('click', ()=>{
+  //     var url = document.querySelector('#url')?.value
+  //     localStorage.setItem('calendar', url)
+  //     setCals(JSON.parse(url))
+  //     console.log(url)
+  //   })
+  // }, []);
 
-  useEffect(() => {
-    console.log("✅ 업데이트된 cals 값:", cals); // 🚀 상태가 업데이트될 때마다 확인
-  }, [cals]);
+  // useEffect(() => {
+  //   console.log("✅ 업데이트된 cals 값:", cals); // 🚀 상태가 업데이트될 때마다 확인
+  // }, [cals]);
 
   return (
     <>
-      {Array.isArray(cals) && cals.length != 0
-      ?<div>
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr'}}>
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((value, index)=> (
           <div key={`weektitle${index}`} style={{overflow: 'hidden', whiteSpace: 'nowrap', borderRight: '1px solid #dddddd', borderBottom: '1px solid #dddddd', height: '2rem', fontSize: '1.5rem', fontWeight: 700, width: '100%', textAlign: 'center'}}>{weekArray[index]} {value}</div>
@@ -65,13 +70,10 @@ export default function Cals() {
           </div>
         ))}
   
-        {cals.map((calendar, index)=> (
+        {json.map((calendar, index)=> (
           <CalendarFetch key={`calendar${index}`} bg={calendar.bg} fg={calendar.fg} src={calendar.src} isPlan={calendar.isPlan} />
         ))}
         </div>
-        </div>
-      :<div><textarea id="url" ></textarea><div id="button">불러오기</div></div>
-    }
     </>
   )
 }
