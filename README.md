@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PlanDo
 
-## Getting Started
+![](https://bucket.peacht.art/misskey/1fb28047-16a8-488e-999a-79203c6354e3.webp)
 
-First, run the development server:
+[데모](https://82.peacht.art/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**플랜두**는 단순히 **캘린더를 렌더링**해 주는 사이트입니다. 데이터베이스가 없어서 아무것도 수집하지 않습니다. 일정을 추가/수정/삭제할 수도 없고, 텍스트 파일에 정의된 모든 캘린더를 그냥 **구독**하는 형태로 제작되었습니다.
+
+## 왜 굳이 플랜두에서 캘린더를 봐야 할까요?
+
+그것은 바로, **계획과 실행을 구분**하기 위해서입니다.
+
+* 여러 가지 플래너(아날로그)를 써 본 결과, 계획/실행이 확실히 구분되어 있는 포맷을 쓰는 게 가장 편리했습니다. 안 그러면 **혼란**스러웠습니다.
+* 그래서 캘린더 어플을 사용하면서 캘린더를 두 세트로 나누어서 계획과 실행을 구분했습니다.
+* 하지만 여러 개의 캘린더를 사용해서 계획/실행을 구분하더라도, 캘린더 어플은 그 시간에 **동시에 두 가지 일을 처리한 것으로 인식**합니다.
+* 그러면 화면이 매우 어지럽게 보여집니다. 마치 아래 그림처럼요. 무지 바쁜 사람처럼 보이긴 하네요...
+
+<img src="https://bucket.peacht.art/misskey/497760ec-4407-42ca-b709-2de2210ae509.webp" width="200px">
+
+## 안 되는 것!
+
+* 같은 시간대에 두 가지 일을 보여줄 수 없습니다. 정확히는 되긴 할 텐데, 두 가지 일이 완전히 겹쳐 보일 겁니다.
+
+## 달력 텍스트 파일 만들기
+
+이 텍스트 파일이 잘못 구성되어 있으면 오류가 발생하게 됩니다. 주의해 주시기 바랍니다.
+
+* `title`: 구분용 캘린더 제목. 한글 특수문자 OK (아직까지는 화면에 영향을 끼치진 않아요!)
+* `src`: 아이클라우드 / 구글 캘린더의 공유 링크
+* `bg`: 배경 색상입니다. hex값 말고 색 이름이나 rgb 값도 OK. **계획 캘린더의 색상은 알아서 투명도가 조절**되니, 계획과 실행의 색상은 통일하는 것이 좋습니다.
+* `fg`: 글씨 색상입니다. hex값 말고 색 이름이나 rgb 값도 OK
+* `isPlan`: 계획 캘린더면 true를, 실행 기록 캘린더면 false를 입력해주세요.
+
+```
+[
+    {
+        "title":"Dev_Plan",
+        "src":"예를 들면 구글 캘린더 공유 링크",
+        "bg":"#ffee8c",
+        "fg":"#000",
+        "isPlan":true
+    },{
+        "title":"Dev_Do",
+        "src":"예를 들면 아이클라우드 캘린더 공유 링크", 
+        "bg":"#ffee8c", 
+        "fg":"#000", 
+        "isPlan":false
+    }
+]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+이 상태로 오브젝트 스토리지 같은 곳에 저장해 주세요. (개인적으로 미스키 드라이브가 제일 편했습니다...) 그리고 해당 링크를 그대로 따서 URL 입력칸에 붙여넣으시면 됩니다.

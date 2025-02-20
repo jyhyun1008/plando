@@ -1,31 +1,37 @@
 import { icsToJson } from "ics-to-json";
 import iCalDateParser from "ical-date-parser";
+import { redirect } from 'next/navigation'
 
 export default async function CalendarFetch({src, bg, fg, isPlan}) {
 
     const convert = async (fileLocation) => {
-      const icsRes = await fetch(fileLocation, {mode: 'no-cors'});
-      const icsData = await icsRes.text();
-      // Convert
-      const data = icsToJson(icsData);
+      try {
 
-      for (let el of data) {
-        if(el.startDate.includes('Z')) {
-            var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 - 3600000*9
-            el.startDate = iCalDateParser(`${el.startDate}`)
-            el.endDate = iCalDateParser(`${el.endDate}`)
-            el.startDateOrigin = el.startDate - origin
-            el.endDateOrigin = el.endDate - origin
-        } else {
-            var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 //- 3600000*9
-            el.startDate = iCalDateParser(`${el.startDate}Z`)
-            el.endDate = iCalDateParser(`${el.endDate}Z`)
-            el.startDateOrigin = el.startDate - origin
-            el.endDateOrigin = el.endDate - origin
+        const icsRes = await fetch(fileLocation, {mode: 'no-cors'});
+        const icsData = await icsRes.text();
+        // Convert
+        const data = icsToJson(icsData);
+  
+        for (let el of data) {
+          if(el.startDate.includes('Z')) {
+              var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 - 3600000*9
+              el.startDate = iCalDateParser(`${el.startDate}`)
+              el.endDate = iCalDateParser(`${el.endDate}`)
+              el.startDateOrigin = el.startDate - origin
+              el.endDateOrigin = el.endDate - origin
+          } else {
+              var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 //- 3600000*9
+              el.startDate = iCalDateParser(`${el.startDate}Z`)
+              el.endDate = iCalDateParser(`${el.endDate}Z`)
+              el.startDateOrigin = el.startDate - origin
+              el.endDateOrigin = el.endDate - origin
+          }
         }
+  
+        return data.filter((el) => el.startDate >= 0)
+      } catch(e) {
+        redirect('/')
       }
-
-      return data.filter((el) => el.startDate >= 0)
     };
 
     let cal = await convert(src)
