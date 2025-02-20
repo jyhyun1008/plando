@@ -3,8 +3,6 @@ import { icsToJson } from "ics-to-json";
 import iCalDateParser from "ical-date-parser";
 import { useState } from "react";
 
-
-
 export default function CalendarFetch({src, bg, fg, isPlan}) {
 
     const [cal, setCal] = useState([])
