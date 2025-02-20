@@ -32,7 +32,7 @@ export default function Home() {
   }, [])
 
   return (
-    <>{cals==[]
+    <>{cals
       ?<div>
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr'}}>
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((value, index)=> (
@@ -55,7 +55,7 @@ export default function Home() {
           </div>
         ))}
   
-        {CalendarSetting.map((calendar, index)=> (
+        {cals.map((calendar, index)=> (
           <CalendarFetch key={`calendar${index}`} bg={calendar.bg} fg={calendar.fg} src={calendar.src} isPlan={calendar.isPlan} />
         ))}
         </div>
