@@ -1,7 +1,6 @@
 'use client'
 import CalendarFetch from "@/components/CalendarFetch";
 import { useState, useEffect } from "react";
-export const dynamic = 'force-dynamic';
 
 export default function Home() {
   const [cals, setCals] = useState([]);
