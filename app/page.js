@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [cals, setCals] = useState(['아무거나'])
+  const [cals, setCals] = useState([])
 
   const todayWeek = new Date().getDay()
   const weekArray = []
@@ -16,25 +16,24 @@ export default function Home() {
   }
 
   useEffect(() => {
-    document.addEventListener("DOMContentLoaded", ()=> {
+
       if (localStorage.getItem('calendar')) {
         setCals(JSON.parse(localStorage.getItem('calendar')))
       }
 
       console.log(cals)
   
-    });
-    document.querySelector('#button').addEventListener('click', ()=>{
-      var url = document.querySelector('#url').value
+    document.querySelector('#button')?.addEventListener('click', ()=>{
+      var url = document.querySelector('#url')?.value
       localStorage.setItem('calendar', url)
       setCals(JSON.parse(url))
-      console.log(cals)
+      console.log(url)
     })
     
   }, [])
 
   return (
-    <>{cals==[]
+    <>{Array.isArray(cals) && cals.length != 0
       ?<div>
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr'}}>
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((value, index)=> (
@@ -57,7 +56,7 @@ export default function Home() {
           </div>
         ))}
   
-        {CalendarSetting.map((calendar, index)=> (
+        {cals.map((calendar, index)=> (
           <CalendarFetch key={`calendar${index}`} bg={calendar.bg} fg={calendar.fg} src={calendar.src} isPlan={calendar.isPlan} />
         ))}
         </div>

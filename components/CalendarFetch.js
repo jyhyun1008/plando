@@ -1,36 +1,40 @@
+'use client'
 import { icsToJson } from "ics-to-json";
 import iCalDateParser from "ical-date-parser";
-
-const convert = async (fileLocation) => {
-  const icsRes = await fetch(fileLocation);
-  const icsData = await icsRes.text();
-  // Convert
-  const data = icsToJson(icsData);
+import { useState } from "react";
 
 
-  for (let el of data) {
-    if(el.startDate.includes('Z')) {
-        var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 - 3600000*9
-        el.startDate = iCalDateParser(`${el.startDate}`)
-        el.endDate = iCalDateParser(`${el.endDate}`)
-        el.startDateOrigin = el.startDate - origin
-        el.endDateOrigin = el.endDate - origin
-    } else {
-        var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 //- 3600000*9
-        el.startDate = iCalDateParser(`${el.startDate}Z`)
-        el.endDate = iCalDateParser(`${el.endDate}Z`)
-        el.startDateOrigin = el.startDate - origin
-        el.endDateOrigin = el.endDate - origin
-    }
-  }
 
-  return data.filter((el)=>el.startDate >=0);
-};
+export default function CalendarFetch({src, bg, fg, isPlan}) {
 
+    const [cal, setCal] = useState([])
 
-export default async function CalendarFetch({src, bg, fg, isPlan}) {
+    const convert = async (fileLocation) => {
+      const icsRes = await fetch(fileLocation);
+      const icsData = await icsRes.text();
+      // Convert
+      const data = icsToJson(icsData);
 
-    const cal = await convert(src)
+      for (let el of data) {
+        if(el.startDate.includes('Z')) {
+            var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 - 3600000*9
+            el.startDate = iCalDateParser(`${el.startDate}`)
+            el.endDate = iCalDateParser(`${el.endDate}`)
+            el.startDateOrigin = el.startDate - origin
+            el.endDateOrigin = el.endDate - origin
+        } else {
+            var origin = new Date() - (new Date().getDay()-1)*86400*1000 - new Date()%86400000 //- 3600000*9
+            el.startDate = iCalDateParser(`${el.startDate}Z`)
+            el.endDate = iCalDateParser(`${el.endDate}Z`)
+            el.startDateOrigin = el.startDate - origin
+            el.endDateOrigin = el.endDate - origin
+        }
+      }
+
+      setCal(data.filter((el) => el.startDate >= 0))
+    };
+
+    convert(src)
 
     if (isPlan) {
         return (
