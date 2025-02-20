@@ -32,7 +32,7 @@ export default function Home() {
   }, [])
 
   return (
-    <>{cals
+    <>{JSON.parse(cals)
       ?<div>
       <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr'}}>
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((value, index)=> (
