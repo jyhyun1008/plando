@@ -28,7 +28,7 @@ export default async function CalendarFetch({src, bg, fg, isPlan}) {
           }
         }
   
-        return data.filter((el) => el.startDate >= 0)
+        return data.filter((el) => el.startDateOrigin >= 0 && el.endDateOrigin <= 7*86400000)
       } catch(e) {
         redirect('/')
       }
